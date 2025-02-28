@@ -7,21 +7,24 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
-      - name: Format publications.bib
+      - name: Install bibtool
+        run: sudo apt install -y bibtool
+      - name: Sort macros
         run: |
-          sudo apt install -y bibtool
-          bibtool -f "%1n(author)%d(year)%2W(title)" -s -R -r bibtool.rsc -i publications.bib > tmp.bib
-          rm publications.bib
-          mv tmp.bib publications.bib
+          sort -o macros/conferences.bib macros/conferences.bib
+          sort -o macros/journals.bib macros/journals.bib
+      - name: Format publications.bib
+        run: 
+          bibtool -f "%1n(author)%d(year)%2W(title)" -s -R -r bibtool.rsc -i publications.bib -o publications.bib
       - name: Create publications_expanded.bib
         run: |
-          bibtool -f "%1n(author)%d(year)%2W(title)" -s -R -r bibtool.rsc -i publications.bib strings.bib > publications_expanded.bib
+          bibtool -f "%1n(author)%d(year)%2W(title)" -s -R -r bibtool.rsc -i publications.bib macros/conferences.bib macros/journals.bib -o publications_expanded.bib
           git add publications_expanded.bib
       - name: Check if there are any changes
         id: verify_diff
         run: |
           git diff --quiet . || echo "changed=true" >> $GITHUB_OUTPUT
-      - name: Push changes
+      - name: Commit and push changes
         if: steps.verify_diff.outputs.changed == 'true'
         run: |
           git config --global user.name 'bibtool'
