@@ -1,0 +1,25 @@
+name: Run bibtool
+on: push
+permissions:
+  contents: write
+jobs:
+  bibtool:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Format publications.bib
+        run: |
+          sudo apt install -y bibtool
+          bibtool -f "%1n(author)%d(year)%2W(title)" -s -R -r bibtool.rsc -i publications.bib > tmp.bib
+          rm publications.bib
+          mv tmp.bib publications.bib
+      - name: Create publications_expanded.bib
+        run: |
+          bibtool -f "%1n(author)%d(year)%2W(title)" -s -R -r bibtool.rsc -i publications.bib strings.bib > publications_expanded.bib
+          git add publications_expanded.bib
+      - name: Push changes
+        run: |
+          git config --global user.name 'bibtool'
+          git config --global user.email 'bibtool@github.com'
+          git commit -am "[bibtool] Automated formatting"
+          git push
