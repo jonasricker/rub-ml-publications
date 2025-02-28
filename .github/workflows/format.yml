@@ -3,7 +3,7 @@ on: push
 permissions:
   contents: write
 jobs:
-  bibtool:
+  run_bibtool:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
@@ -17,7 +17,12 @@ jobs:
         run: |
           bibtool -f "%1n(author)%d(year)%2W(title)" -s -R -r bibtool.rsc -i publications.bib strings.bib > publications_expanded.bib
           git add publications_expanded.bib
+      - name: Check if there are any changes
+        id: verify_diff
+        run: |
+          git diff --quiet . || echo "changed=true" >> $GITHUB_OUTPUT
       - name: Push changes
+        if: steps.verify_diff.outputs.changed == 'true'
         run: |
           git config --global user.name 'bibtool'
           git config --global user.email 'bibtool@github.com'
