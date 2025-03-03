@@ -13,16 +13,14 @@ jobs:
         run: |
           sort -o macros/conferences.bib macros/conferences.bib
           sort -o macros/journals.bib macros/journals.bib
-      - name: Format publications.bib
-        run: 
-          bibtool -f "%1n(author)%d(year)%2W(title)" -s -R -r bibtool.rsc -i publications.bib -o publications.bib
-      - name: Create publications_expanded.bib
+      - name: Format publications
         run: |
+          bibtool -f "%1n(author)%d(year)%2W(title)" -s -R -r bibtool.rsc -i publications.bib -o publications.bib
           bibtool -f "%1n(author)%d(year)%2W(title)" -s -R -r bibtool.rsc -i publications.bib macros/conferences.bib macros/journals.bib -o publications_expanded.bib
-          git add publications_expanded.bib
       - name: Commit and push changes
         run: |
           git config --global user.name 'bibtool'
           git config --global user.email 'bibtool@github.com'
+          git add .
           git commit -am "[bibtool] Automated formatting" || exit 0
           git push
