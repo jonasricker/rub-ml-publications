@@ -20,14 +20,10 @@ jobs:
         run: |
           bibtool -f "%1n(author)%d(year)%2W(title)" -s -R -r bibtool.rsc -i publications.bib macros/conferences.bib macros/journals.bib -o publications_expanded.bib
           git add publications_expanded.bib
-      - name: Check if there are any changes
-        id: verify_diff
-        run: |
-          git diff --quiet . || echo "changed=true" >> $GITHUB_OUTPUT
       - name: Commit and push changes
         if: steps.verify_diff.outputs.changed == 'true'
         run: |
           git config --global user.name 'bibtool'
           git config --global user.email 'bibtool@github.com'
-          git commit -am "[bibtool] Automated formatting"
+          git commit -am "[bibtool] Automated formatting" || exit 0
           git push
