@@ -8,7 +8,7 @@ This repository contains all publications by the [Chair for Machine Learning at 
 3. If there is not yet a macro defintion for the conference/journal of your publications, add it to `macros/conferences.bib` or `macros/journals.bib`.
 4. Create a pull request.
 
-## Formating guidelines
+## Formatting guidelines
 Each entry should contain (only) the following fields:
 - `author` (always use the same spelling)
 - `title` (to enforce a certain capitalization, use double curly braces, e.g. `{{ImageNet}}: A Large-Scale Hierarchical Image Database`)
