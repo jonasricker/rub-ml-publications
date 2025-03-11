@@ -5,7 +5,7 @@ This repository contains all publications by the [Chair for Machine Learning at 
 ## How to add publications
 1. Fork this repository.
 2. Add your publication to `publications.bib`.
-3. If there is not yet a macro defintion for the conference/journal of your publications, add it to `macros/conferences.bib` or `macros/journals.bib`.
+3. If there is not yet a macro definition for the conference/journal of your publications, add it to `macros/conferences.bib` or `macros/journals.bib`.
 4. Create a pull request.
 
 ## Formatting guidelines
