@@ -13,6 +13,7 @@ jobs:
           sort -o macros/journals.bib macros/journals.bib
       - name: Format publications
         run: |
+          sudo apt update
           sudo apt install -y bibtool
           bibtool -f "%1n(author)%d(year)%2W(title)" -s -R -r bibtool.rsc -i publications.bib -o publications.bib
           bibtool -f "%1n(author)%d(year)%2W(title)" -s -R -r bibtool.rsc -i publications.bib macros/conferences.bib macros/journals.bib -o publications_expanded.bib
