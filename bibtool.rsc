@@ -5,4 +5,3 @@ expand.macros{on}
 print.line.length{1000}
 print.use.tab{off}
 suppress.initial.newline{on}
-parse.exit.on.error{on}
